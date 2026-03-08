@@ -81,7 +81,7 @@ class ApiClient {
         }
       }
 
-      const data: any = await response.json();
+      const data: AuthTokens = await response.json();
       console.log("✅ Login successful, tokens received");
       
       // Store tokens from response
@@ -102,7 +102,7 @@ class ApiClient {
     email: string,
     password: string,
     fullName: string
-  ): Promise<User> {
+  ): Promise<AuthTokens> {
     try {
       console.log("📤 Attempting registration to:", `${API_BASE}/api/auth/register`);
       
@@ -129,14 +129,14 @@ class ApiClient {
         }
       }
 
-      const tokens: any = await response.json();
+      const data: AuthTokens = await response.json();
       console.log("✅ Registration successful, tokens received");
       
       // Store tokens from response
-      Cookies.set("access_token", tokens.access_token, { expires: 1 });
-      Cookies.set("refresh_token", tokens.refresh_token, { expires: 7 });
+      Cookies.set("access_token", data.access_token, { expires: 1 });
+      Cookies.set("refresh_token", data.refresh_token, { expires: 7 });
       
-      return tokens.user;
+      return data;
     } catch (error) {
       console.error("🔴 Registration error:", error);
       if (error instanceof Error) {
